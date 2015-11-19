@@ -85,7 +85,7 @@ class LedControl {
          * csPin		pin for selecting the device 
          * numDevices	maximum number of devices that can be controled
          */
-        LedControl(int dataPin, int clkPin, int csPin, int numDevices=1);
+        LedControl(int csPin, int numDevices=1);
 
         /*
          * Gets the number of devices attached to this LedControl.

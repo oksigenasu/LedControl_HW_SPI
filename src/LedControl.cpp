@@ -45,21 +45,18 @@
 #define OP_DISPLAYTEST 15
 
 
-LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices) {
-    SPI_MOSI=dataPin;
-    SPI_CLK=clkPin;
+LedControl::LedControl(int csPin, int numDevices) {
     SPI_CS=csPin;
     if(numDevices<=0 || numDevices>8 )
         numDevices=8;
     maxDevices=numDevices;
-    pinMode(SPI_MOSI,OUTPUT);
-    pinMode(SPI_CLK,OUTPUT);
+    pinMode(MOSI,OUTPUT);
+    pinMode(SCK,OUTPUT);
     pinMode(SPI_CS,OUTPUT);
 		SPI.setBitOrder(MSBFIRST);
 		SPI.setDataMode(SPI_MODE0);
 		SPI.begin();
     digitalWrite(SPI_CS,HIGH);
-    SPI_MOSI=dataPin;
     for(int i=0;i<64;i++) 
         status[i]=0x00;
     for(int i=0;i<maxDevices;i++) {
@@ -210,7 +207,7 @@ void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data)
 		SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
     for(int i=maxbytes;i>0;i--)
 			SPI.transfer(spidata[i-1]);
-//       shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
+//       shiftOut(MOSI,SCK,MSBFIRST,spidata[i-1]);
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
 }    
