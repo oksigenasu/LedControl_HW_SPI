@@ -204,11 +204,12 @@ void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data)
     //enable the line 
     digitalWrite(SPI_CS,LOW);
     //Now shift out the data
-		SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
+		SPI.beginTransaction(SPISettings(100000000, MSBFIRST, SPI_MODE0));
     for(int i=maxbytes;i>0;i--)
 			SPI.transfer(spidata[i-1]);
 //       shiftOut(MOSI,SCK,MSBFIRST,spidata[i-1]);
     //latch the data onto the display
+		SPI.endTransaction();
     digitalWrite(SPI_CS,HIGH);
 }    
 
