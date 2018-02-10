@@ -1,4 +1,6 @@
-/*
+/*    LedControlHW.cpp - A library for controling Leds with a MAX7219/MAX7221
+ *    modified using HW SPI for ESP8266.
+ *    
  *    LedControl.cpp - A library for controling Leds with a MAX7219/MAX7221
  *    Copyright (c) 2007 Eberhard Fahle
  * 
@@ -25,7 +27,7 @@
  */
 
 
-#include "LedControl.h"
+#include "LedControlHW.h"
 #include <SPI.h>
 
 //the opcodes for the MAX7221 and MAX7219
@@ -45,7 +47,7 @@
 #define OP_DISPLAYTEST 15
 
 
-LedControl::LedControl(int csPin, int numDevices) {
+LedControlHW::LedControlHW(int csPin, int numDevices) {
     SPI_CS=csPin;
     if(numDevices<=0 || numDevices>8 )
         numDevices=8;
@@ -71,11 +73,11 @@ LedControl::LedControl(int csPin, int numDevices) {
     }
 }
 
-int LedControl::getDeviceCount() {
+int LedControlHW::getDeviceCount() {
     return maxDevices;
 }
 
-void LedControl::shutdown(int addr, bool b) {
+void LedControlHW::shutdown(int addr, bool b) {
     if(addr<0 || addr>=maxDevices)
         return;
     if(b)
@@ -84,21 +86,21 @@ void LedControl::shutdown(int addr, bool b) {
         spiTransfer(addr, OP_SHUTDOWN,1);
 }
 
-void LedControl::setScanLimit(int addr, int limit) {
+void LedControlHW::setScanLimit(int addr, int limit) {
     if(addr<0 || addr>=maxDevices)
         return;
     if(limit>=0 && limit<8)
         spiTransfer(addr, OP_SCANLIMIT,limit);
 }
 
-void LedControl::setIntensity(int addr, int intensity) {
+void LedControlHW::setIntensity(int addr, int intensity) {
     if(addr<0 || addr>=maxDevices)
         return;
     if(intensity>=0 && intensity<16)	
         spiTransfer(addr, OP_INTENSITY,intensity);
 }
 
-void LedControl::clearDisplay(int addr) {
+void LedControlHW::clearDisplay(int addr) {
     int offset;
 
     if(addr<0 || addr>=maxDevices)
@@ -110,7 +112,7 @@ void LedControl::clearDisplay(int addr) {
     }
 }
 
-void LedControl::setLed(int addr, int row, int column, boolean state) {
+void LedControlHW::setLed(int addr, int row, int column, boolean state) {
     int offset;
     byte val=0x00;
 
@@ -129,7 +131,7 @@ void LedControl::setLed(int addr, int row, int column, boolean state) {
     spiTransfer(addr, row+1,status[offset+row]);
 }
 
-void LedControl::setRow(int addr, int row, byte value) {
+void LedControlHW::setRow(int addr, int row, byte value) {
     int offset;
     if(addr<0 || addr>=maxDevices)
         return;
@@ -140,7 +142,7 @@ void LedControl::setRow(int addr, int row, byte value) {
     spiTransfer(addr, row+1,status[offset+row]);
 }
 
-void LedControl::setColumn(int addr, int col, byte value) {
+void LedControlHW::setColumn(int addr, int col, byte value) {
     byte val;
 
     if(addr<0 || addr>=maxDevices)
@@ -154,7 +156,7 @@ void LedControl::setColumn(int addr, int col, byte value) {
     }
 }
 
-void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
+void LedControlHW::setDigit(int addr, int digit, byte value, boolean dp) {
     int offset;
     byte v;
 
@@ -170,7 +172,7 @@ void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
     spiTransfer(addr, digit+1,v);
 }
 
-void LedControl::setChar(int addr, int digit, char value, boolean dp) {
+void LedControlHW::setChar(int addr, int digit, char value, boolean dp) {
     int offset;
     byte index,v;
 
@@ -191,7 +193,7 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     spiTransfer(addr, digit+1,v);
 }
 
-void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
+void LedControlHW::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
     //Create an array with the data to shift out
     int offset=addr*2;
     int maxbytes=maxDevices*2;
@@ -204,7 +206,7 @@ void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data)
     //enable the line 
     digitalWrite(SPI_CS,LOW);
     //Now shift out the data
-		SPI.beginTransaction(SPISettings(100000000, MSBFIRST, SPI_MODE0));
+		SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     for(int i=maxbytes;i>0;i--)
 			SPI.transfer(spidata[i-1]);
 //       shiftOut(MOSI,SCK,MSBFIRST,spidata[i-1]);
