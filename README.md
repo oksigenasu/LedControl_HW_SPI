@@ -22,7 +22,8 @@ Pin Assignments
 | Leonardo | ICSP-4 | ICSP-1 | ICSP-3 | - | - |
 | Due | ICSP-4 | ICSP-1 | ICSP-3 | - | 4, 10, 52 |
 | Deek-Robot Arduino | 11 | 12 | 13 | - | 10 |	
-
+| ESP8266  | 13 | 12 | 14 | - | 15 |	
+| NodeMCU LoLin  | D7 | D6 | D5 | - | D8 |	
 
 Documentation
 -------------
