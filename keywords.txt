@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map For LedControl
+# Syntax Coloring Map For LedControlHW
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-LedControl	KEYWORD1
+LedControlHW	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
