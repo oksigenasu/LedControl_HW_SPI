@@ -1,4 +1,7 @@
 /*
+ *    LedControlHW.h - A library for controling Leds with a MAX7219/MAX7221
+ *    modified using hardware SPI for esp8266
+ *
  *    LedControl.h - A library for controling Leds with a MAX7219/MAX7221
  *    Copyright (c) 2007 Eberhard Fahle
  * 
@@ -24,8 +27,8 @@
  *    OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef LedControl_h
-#define LedControl_h
+#ifndef LedControlHW_h
+#define LedControlHW_h
 
 #if defined ( ESP8266 )
   #include <pgmspace.h>
@@ -62,7 +65,7 @@ const static byte charTable [] PROGMEM  = {
     B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000
 };
 
-class LedControl {
+class LedControlHW {
     private :
         /* The array for shifting the data to the devices */
         byte spidata[16];
@@ -89,7 +92,7 @@ class LedControl {
          * csPin		pin for selecting the device 
          * numDevices	maximum number of devices that can be controled
          */
-        LedControl(int csPin, int numDevices=1);
+        LedControlHW(int csPin, int numDevices=1);
 
         /*
          * Gets the number of devices attached to this LedControl.
@@ -188,7 +191,7 @@ class LedControl {
         void setChar(int addr, int digit, char value, boolean dp);
 };
 
-#endif	//LedControl.h
+#endif	//LedControlHW.h
 
 
 
