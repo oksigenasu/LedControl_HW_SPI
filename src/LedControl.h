@@ -27,7 +27,11 @@
 #ifndef LedControl_h
 #define LedControl_h
 
-#include <avr/pgmspace.h>
+#if defined ( ESP8266 )
+  #include <pgmspace.h>
+#else
+  #include <avr/pgmspace.h>
+#endif
 
 #if (ARDUINO >= 100)
 #include <Arduino.h>
