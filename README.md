@@ -42,7 +42,7 @@ Charmap
 -------
 Using charmap helper from [josepino](http://www.josepino.com/microcontroller/7-segment-ascii) we made slightly expanded charmap
 
-[](7segmentdesign.jpg)
+![](7segmentdesign.jpg)
 
 
 
