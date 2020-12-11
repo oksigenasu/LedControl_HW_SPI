@@ -22,6 +22,7 @@ Pin Assignments
 | Leonardo | ICSP-4 | ICSP-1 | ICSP-3 | - | - |
 | Due | ICSP-4 | ICSP-1 | ICSP-3 | - | 4, 10, 52 |
 | Deek-Robot Arduino | 11 | 12 | 13 | - | 10 |	
+| ESP8266 | GPIO13 | GPIO12 | GPIO14 | any | - |
 
 
 Documentation
@@ -33,13 +34,15 @@ Download
 The lastest binary version of the Library is always available from the 
 [LedControl Release Page](https://github.com/wayoda/LedControl/releases) 
 
-
 Install
 -------
 The library can be installed using the [standard Arduino library install procedure](http://arduino.cc/en/Guide/Libraries)  
 
+Charmap
+-------
+Using charmap helper from [josepino](http://www.josepino.com/microcontroller/7-segment-ascii) we made slightly expanded charmap
 
-
+[](7segmentdesign.jpg)
 
 
 
