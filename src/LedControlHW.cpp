@@ -1,6 +1,4 @@
-/*    LedControlHW.cpp - A library for controling Leds with a MAX7219/MAX7221
- *    modified using HW SPI for ESP8266.
- *    
+/*
  *    LedControl.cpp - A library for controling Leds with a MAX7219/MAX7221
  *    Copyright (c) 2007 Eberhard Fahle
  * 
@@ -191,6 +189,33 @@ void LedControlHW::setChar(int addr, int digit, char value, boolean dp) {
         v|=B10000000;
     status[offset+digit]=v;
     spiTransfer(addr, digit+1,v);
+}
+
+void LedControlHW::setCustom(int addr, int mapped_digit, char value, boolean dp) {
+    byte val;
+    int offset;
+    byte index,v;
+
+    if(addr<0 || addr>=maxDevices)
+        return;
+    if(mapped_digit<0 || mapped_digit>7) 
+        return;
+    offset=addr*8;
+    index=(byte)value;
+    if(index >127) {
+        //no defined beyond index 127, so we use the space char
+        index=32;
+    }
+    v=pgm_read_byte_near(charTable + index); 
+    if(dp)
+        v|=B10000000;
+    //map the convoluted shit here
+    int bitmap[8] = {3,0,4,5, 1,6,2,7};
+    for(int row=0;row<8;row++) {
+        val=v >> (7-bitmap[row]);
+        val=val & 0x01;
+        setLed(addr,row,mapped_digit,val);
+    }
 }
 
 void LedControlHW::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
